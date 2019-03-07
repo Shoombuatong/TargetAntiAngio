@@ -64,7 +64,7 @@ data = Resultext
 	MCCts[i,]  = MCC1/MCC4
 }
 
-result = data.frame (ACCtr,SPECtr,SENStr,MCCtr,AUCtr,ACCts,SPECts,SENSts,MCCts,AUCts,DifACC)
+result = data.frame (ACCtr,SPECtr,SENStr,MCCtr,AUCtr,ACCts,SPECts,SENSts,MCCts,AUCts)
 result = na.omit(result)
 
 Mean  <- matrix(nrow = 10, ncol = 1)
