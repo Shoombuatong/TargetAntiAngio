@@ -1,4 +1,41 @@
-data2 = data.frame(PCP,Class = label)
+library(RWeka)
+library(caret)
+library(randomForest)
+library(Interpol)
+library(protr)
+library(seqinr)
+library(Peptides)
+
+x <- read.fasta('angio NT15.fasta', seqtype="AA", as.string = TRUE)
+label = read.csv("Class angio and negative NTCT.csv", header = TRUE) 
+A <- x[(sapply(x, protcheck))]
+m = length(A)
+PCP  <- matrix(nrow = m, ncol = 531)
+pse = 2
+weight = 0.1
+PAAC <- matrix(nrow = m, ncol = 20 + pse)
+
+AAC <- t(sapply(A, extractAAC))
+DPC <- t(sapply(A, extractDC))
+
+for(i in 1:m){ 
+x = A[[i]][1]
+b = AAdescriptor(x, 531,2)
+PCP[i,] = Interpol(b, 531,"linear")
+}
+
+for(i in 1:m){ 
+PAAC[i, ] = extractPAAC(A[[i]][1],lambda = pse, w = weight, props = c("Hydrophobicity", "Hydrophilicity", "SideChainMass"))
+}
+
+col = 20+ 2*3
+APAAC  <- matrix(nrow = length(A), ncol = col)
+for (i in 1:length(A)){
+APAAC[i,] = extractAPAAC(A[[i]][1],lambda = 3, w = 0.2, customprops = NULL)
+}
+
+###############################################
+data2 = data.frame(AAC,APAAC,PCP,Class = label)
 
 Pos = subset(data2, Class == 'Antiangio')
 Neg = subset(data2, Class == 'Negative')
