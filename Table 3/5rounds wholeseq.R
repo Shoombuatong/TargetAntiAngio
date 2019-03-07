@@ -36,7 +36,7 @@ for (i in 1:length(A)){
 APAAC[i,] = extractAPAAC(A[[i]][1],lambda = ampse, w = weightampse, customprops = NULL)
 }
 #############################################
-data2 = data.frame(PCP,Class = label)
+data2 = data.frame(AAC,APAAC,PCP,Class = label)
 
 Pos = subset(data2, Class == 'Antiangio')
 Neg = subset(data2, Class == 'Negative')
